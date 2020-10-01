@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 public class Autonomo {
     public int qntEstados;
@@ -20,7 +21,18 @@ public class Autonomo {
         this.matrizTransicoes[linha][coluna] = transicao;
     }
 
-    public void AvaliaCadeia(int[] cadeia) {
-        System.out.println("nois");
+    public boolean AvaliaCadeia(int[] cadeia, int posicaoCadeia, int estadoAtual) {
+        int simbolo = cadeia[posicaoCadeia];
+        if(posicaoCadeia == (cadeia.length - 1)) { //verifica se está na ultima posição, se continuar é porque não está
+            for(int i = 0; i < estadosAceitacao.length; i++) {
+                if(estadoAtual == estadosAceitacao[i]) return true;
+            }
+        }
+
+        for(int i = 0; i < this.qntEstados; i++) {
+            if(this.matrizTransicoes[estadoAtual][i] == simbolo) {
+                return this.AvaliaCadeia(cadeia, posicaoCadeia++, i);
+            }
+        }
     }
 }
