@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class Autonomo {
     public int qntEstados;
     public int qntSimbolos;
@@ -21,18 +19,32 @@ public class Autonomo {
         this.matrizTransicoes[linha][coluna] = transicao;
     }
 
-    public boolean AvaliaCadeia(int[] cadeia, int posicaoCadeia, int estadoAtual) {
+    public boolean AvaliaRecursivo(int[] cadeia, int posicaoCadeia, int estadoAtual) {
         int simbolo = cadeia[posicaoCadeia];
+        boolean aceito = false;
+
         if(posicaoCadeia == (cadeia.length - 1)) { //verifica se está na ultima posição, se continuar é porque não está
             for(int i = 0; i < estadosAceitacao.length; i++) {
-                if(estadoAtual == estadosAceitacao[i]) return true;
+                if(estadoAtual == estadosAceitacao[i]) {
+                    return true;
+                }
             }
+            return false;
+        } else {
+            for(int i = 0; i < this.qntEstados; i++) {
+                if(this.matrizTransicoes[estadoAtual][i] == simbolo) {
+                    aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia++, i);
+                    if(aceito) return true;
+                }
+            }
+            return false;
         }
+    }
 
-        for(int i = 0; i < this.qntEstados; i++) {
-            if(this.matrizTransicoes[estadoAtual][i] == simbolo) {
-                return this.AvaliaCadeia(cadeia, posicaoCadeia++, i);
-            }
-        }
+    public boolean AvaliaCadeia(int[] cadeia) {
+        boolean aceito = false;
+        aceito = AvaliaRecursivo(cadeia, 0, 0);
+
+        return aceito;
     }
 }
