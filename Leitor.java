@@ -39,7 +39,8 @@ public class Leitor {
                     vetorCadeiaInt[k] = Integer.parseInt(vetorCadeia[k]);
                 }
 
-                boolean ehAceito = autonomo.AvaliaCadeia(vetorCadeiaInt, 0, 0);
+                Boolean resultado = autonomo.AvaliaCadeia(vetorCadeiaInt);
+                System.out.println(resultado);
             }
         }
     }
