@@ -19,14 +19,14 @@ public class Leitor {
                 estadosAceitacao[j] = Integer.parseInt(stringAceitacao[j]);
             }
             
-            Autonomo autonomo = new Autonomo(cabecalho[0], cabecalho[1], cabecalho[2], estadosAceitacao);
+            Automato automato = new Automato(cabecalho[0], cabecalho[1], cabecalho[2], estadosAceitacao);
 
             int qntTransicoes = Integer.parseInt(cabecalho[2]);
             for(int j = 0; j < qntTransicoes; j++) {
                 String transicao = leitor.readLine();
                 String[] partesTransicao = transicao.split(" ");
 
-                autonomo.ConstroiMatriz(Integer.parseInt(partesTransicao[0]), Integer.parseInt(partesTransicao[1]), Integer.parseInt(partesTransicao[2]));
+                automato.ConstroiMatriz(Integer.parseInt(partesTransicao[0]), Integer.parseInt(partesTransicao[1]), Integer.parseInt(partesTransicao[2]));
             }
             
             int qntCadeias = Integer.parseInt(leitor.readLine());
@@ -39,7 +39,7 @@ public class Leitor {
                     vetorCadeiaInt[k] = Integer.parseInt(vetorCadeia[k]);
                 }
 
-                Boolean resultado = autonomo.AvaliaCadeia(vetorCadeiaInt);
+                Boolean resultado = automato.AvaliaCadeia(vetorCadeiaInt);
                 System.out.println(resultado);
             }
         }
