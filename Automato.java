@@ -26,12 +26,12 @@ public class Automato {
 
     public boolean AvaliaCadeia(int[] cadeia) {
         boolean aceito = false;
-        aceito = AvaliaRecursivo(cadeia, 0, 0);
+        aceito = AvaliaRecursivo(cadeia, 0, 0, -1);
 
         return aceito;
     }
 
-    private boolean AvaliaRecursivo(int[] cadeia, int posicaoCadeia, int estadoAtual) {
+    private boolean AvaliaRecursivo(int[] cadeia, int posicaoCadeia, int estadoAtual, int vemDeCadeiaVazia) {
         int simbolo;
         boolean aceito = false;
 
@@ -51,9 +51,18 @@ public class Automato {
         } else {
             for(int i = 0; i < this.qntEstados; i++) {
                 if(this.matrizTransicoes[estadoAtual][i] == simbolo) {
-                    aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia + 1, i);
-                    if(aceito) {
-                        return true;
+                    if(i != vemDeCadeiaVazia) {
+                        aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia + 1, i, -1);
+                        if(aceito) {
+                            return true;
+                        }
+                    }
+                } else if(this.matrizTransicoes[estadoAtual][i] == 0) {
+                    if(i != vemDeCadeiaVazia) {
+                        aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia + 1, i, estadoAtual);
+                        if(aceito) {
+                            return true;
+                        }
                     }
                 }
             }
