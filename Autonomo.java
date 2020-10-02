@@ -34,5 +34,6 @@ public class Autonomo {
                 return this.AvaliaCadeia(cadeia, posicaoCadeia++, i);
             }
         }
+        return false;
     }
 }
