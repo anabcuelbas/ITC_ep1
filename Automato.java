@@ -12,6 +12,11 @@ public class Automato {
         this.estadosAceitacao = estadosAceitacao;
 
         matrizTransicoes = new int [this.qntEstados][this.qntEstados];
+        for(int i = 0; i < this.qntEstados; i++) {
+            for(int j = 0; j < this.qntEstados; j++) {
+                matrizTransicoes[i][j] = -1;
+            }
+        }
     }
 
     public void ConstroiMatriz(int linha, int transicao, int coluna) {
@@ -27,10 +32,6 @@ public class Automato {
     }
 
     private boolean AvaliaRecursivo(int[] cadeia, int posicaoCadeia, int estadoAtual) {
-        //Problema 1: o estado atual tá sempre atrasado, no fim ele para no estado anterior do que deveria (resolvi feiamente)
-        //Problema 2: A matriz no java é inicializada com 0, e o símbolo vazio também é representado com 0
-        //Problema 3: Tratar o caso da transição vazia - não pode avançar a posicaoCadeia
-        //Problema 4: Evitar loop quando o símbolo é vazio
         int simbolo;
         boolean aceito = false;
 
