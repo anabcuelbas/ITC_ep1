@@ -19,7 +19,7 @@ public class Leitor {
                 estadosAceitacao[j] = Integer.parseInt(stringAceitacao[j]);
             }
             
-            Automato automato = new Automato(cabecalho[0], cabecalho[1], cabecalho[2], estadosAceitacao);
+            Automato automato = new Automato(cabecalho[0], cabecalho[1], cabecalho[2], cabecalho[3], estadosAceitacao);
 
             int qntTransicoes = Integer.parseInt(cabecalho[2]);
             for(int j = 0; j < qntTransicoes; j++) {

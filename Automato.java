@@ -2,13 +2,15 @@ public class Automato {
     public int qntEstados;
     public int qntSimbolos;
     public int qntTransicoes;
+    public int estadoInicial;
     public int[] estadosAceitacao;
     public int[][] matrizTransicoes;
 
-    public Automato(String qntEstados, String qntSimbolos, String qntTransicoes, int[] estadosAceitacao) {
+    public Automato(String qntEstados, String qntSimbolos, String qntTransicoes, String estadoInicial, int[] estadosAceitacao) {
         this.qntEstados = Integer.parseInt(qntEstados);
         this.qntSimbolos = Integer.parseInt(qntSimbolos);
         this.qntTransicoes = Integer.parseInt(qntTransicoes);
+        this.estadoInicial = Integer.parseInt(estadoInicial);
         this.estadosAceitacao = estadosAceitacao;
 
         matrizTransicoes = new int [this.qntEstados][this.qntEstados];
@@ -20,13 +22,13 @@ public class Automato {
     }
 
     public void ConstroiMatriz(int linha, int transicao, int coluna) {
-
+    
         this.matrizTransicoes[linha][coluna] = transicao;
     }
 
     public boolean AvaliaCadeia(int[] cadeia) {
         boolean aceito = false;
-        aceito = AvaliaRecursivo(cadeia, 0, 0, -1);
+        aceito = AvaliaRecursivo(cadeia, 0, this.estadoInicial, -1);
 
         return aceito;
     }
@@ -51,15 +53,13 @@ public class Automato {
         } else {
             for(int i = 0; i < this.qntEstados; i++) {
                 if(this.matrizTransicoes[estadoAtual][i] == simbolo) {
-                    if(i != vemDeCadeiaVazia) {
-                        aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia + 1, i, -1);
-                        if(aceito) {
-                            return true;
-                        }
+                    aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia + 1, i, -1);
+                    if(aceito) {
+                        return true;
                     }
                 } else if(this.matrizTransicoes[estadoAtual][i] == 0) {
                     if(i != vemDeCadeiaVazia) {
-                        aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia + 1, i, estadoAtual);
+                        aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia, i, estadoAtual);
                         if(aceito) {
                             return true;
                         }
