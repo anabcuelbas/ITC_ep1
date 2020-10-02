@@ -13,17 +13,19 @@ public class Automato {
         this.estadoInicial = Integer.parseInt(estadoInicial);
         this.estadosAceitacao = estadosAceitacao;
 
-        matrizTransicoes = new int [this.qntEstados][this.qntEstados];
-        for(int i = 0; i < this.qntEstados; i++) {
-            for(int j = 0; j < this.qntEstados; j++) {
+        matrizTransicoes = new int [3][this.qntTransicoes];
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < this.qntTransicoes; j++) {
                 matrizTransicoes[i][j] = -1;
             }
         }
     }
 
-    public void ConstroiMatriz(int linha, int transicao, int coluna) {
+    public void ConstroiMatriz(int coluna, int estadoSaida, int simboloTransicao, int estadoEntrada) {
     
-        this.matrizTransicoes[linha][coluna] = transicao;
+        this.matrizTransicoes[0][coluna] = estadoSaida;
+        this.matrizTransicoes[1][coluna] = simboloTransicao;
+        this.matrizTransicoes[2][coluna] = estadoEntrada;
     }
 
     public boolean AvaliaCadeia(int[] cadeia) {
@@ -52,16 +54,22 @@ public class Automato {
             return false;
         } else {
             for(int i = 0; i < this.qntEstados; i++) {
-                if(this.matrizTransicoes[estadoAtual][i] == simbolo) {
-                    aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia + 1, i, -1);
-                    if(aceito) {
-                        return true;
-                    }
-                } else if(this.matrizTransicoes[estadoAtual][i] == 0) {
-                    if(i != vemDeCadeiaVazia) {
-                        aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia, i, estadoAtual);
-                        if(aceito) {
-                            return true;
+                if(this.matrizTransicoes[0][i] == estadoAtual) {
+                    for(int j = 0; j < this.qntEstados; j++) {
+                        if(this.matrizTransicoes[1][j] == simbolo) {
+                            if(i != vemDeCadeiaVazia) {
+                                aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia + 1, i, -1);
+                                if(aceito) {
+                                    return true;
+                                }
+                            }
+                        } else if(this.matrizTransicoes[1][j] == 0) {
+                            if(i != vemDeCadeiaVazia) {
+                                aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia, i, estadoAtual);
+                                if(aceito) {
+                                    return true;
+                                }
+                            }
                         }
                     }
                 }

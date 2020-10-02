@@ -26,7 +26,7 @@ public class Leitor {
                 String transicao = leitor.readLine();
                 String[] partesTransicao = transicao.split(" ");
 
-                automato.ConstroiMatriz(Integer.parseInt(partesTransicao[0]), Integer.parseInt(partesTransicao[1]), Integer.parseInt(partesTransicao[2]));
+                automato.ConstroiMatriz(j, Integer.parseInt(partesTransicao[0]), Integer.parseInt(partesTransicao[1]), Integer.parseInt(partesTransicao[2]));
             }
             
             int qntCadeias = Integer.parseInt(leitor.readLine());
