@@ -3,7 +3,7 @@
 import java.io.*;
 
 /**
-	Esta classe representa os autômatos. O método princial
+	Esta classe representa os autômatos. O método principal
 	instancia um objeto deste tipo para cada autômato a ser testado.
 */
 
@@ -104,8 +104,12 @@ public class afn {
                         if(this.matrizTransicoes[0][j] == estadoAtual) {
                             if(this.matrizTransicoes[1][j] == 0) {
                                 if(this.matrizTransicoes[2][j] == this.estadosAceitacao[i]) {
-                                    aceito = AvaliaRecursivo(cadeia, this.matrizTransicoes[2][j], posicaoProximoSimbolo);
-                                    if(aceito) return true;
+                                    try {
+                                        aceito = AvaliaRecursivo(cadeia, this.matrizTransicoes[2][j], posicaoProximoSimbolo);
+                                        if(aceito) return true;
+                                    } catch(StackOverflowError e) {
+                                        return false;
+                                    }
                                 }
                             }
                         }
@@ -117,9 +121,17 @@ public class afn {
             for(int j = 0; j < this.qntTransicoes; j++) {
                 if(this.matrizTransicoes[0][j] == estadoAtual) {
                     if(this.matrizTransicoes[1][j] == simbolo) {
-                        aceito = AvaliaRecursivo(cadeia, this.matrizTransicoes[2][j], posicaoProximoSimbolo + 1);
+                        try {
+                            aceito = AvaliaRecursivo(cadeia, this.matrizTransicoes[2][j], posicaoProximoSimbolo + 1);
+                        } catch(StackOverflowError e) {
+                            return false;
+                        }
                     } else if(this.matrizTransicoes[1][j] == 0) {
-                        aceito = AvaliaRecursivo(cadeia, this.matrizTransicoes[2][j], posicaoProximoSimbolo);
+                        try {
+                            aceito = AvaliaRecursivo(cadeia, this.matrizTransicoes[2][j], posicaoProximoSimbolo);
+                        } catch(StackOverflowError e) {
+                            return false;
+                        }
                     }
     
                     if(aceito) return true;
@@ -132,7 +144,7 @@ public class afn {
     /**
         O método principal. Este método le o arquivo de entrada por linha e chama o construtor 
         da classe afn para criar os autômatos com as caracteristicas especificadas pelo arquivo de texto.
-        É montada também a matriz de transições desse autômato e por ultimo, cada cadeia de teste é 
+        É montada também a matriz de transições desse autômato e por último, cada cadeia de teste é 
         enviada para a função de avaliação.
         Por último, os resultados dessas avaliações são devolvidos no arquivo de saída.
 
