@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+
 public class Automato {
     public int qntEstados;
     public int qntSimbolos;
@@ -5,6 +7,7 @@ public class Automato {
     public int estadoInicial;
     public int[] estadosAceitacao;
     public int[][] matrizTransicoes;
+    //public List<Integer> ultimosEstados = new LinkedList<Integer>();
 
     public Automato(String qntEstados, String qntSimbolos, String qntTransicoes, String estadoInicial, int[] estadosAceitacao) {
         this.qntEstados = Integer.parseInt(qntEstados);
@@ -40,23 +43,18 @@ public class Automato {
         boolean aceito = false;
 
         if(posicaoCadeia == (cadeia.length - 1)) {
-            int [] ultimosEstados = new int [this.qntTransicoes];
+            LinkedList ultimosEstados = new LinkedList<Integer>();
+            
             for(int i = 0; i < this.qntTransicoes; i++) {
-                ultimosEstados[i] = -1;
-            }
-
-
-            for(int i = 0; i < this.qntTransicoes; i++) {
-                ultimosEstados[i] = -1;
                 if(this.matrizTransicoes[0][i] == estadoAtual) {
                     if(this.matrizTransicoes[1][i] == simbolo){
-                        ultimosEstados[i] = this.matrizTransicoes[2][i];
+                        ultimosEstados = estadosPorCadeiaVazia(estadoAtual, estadoAtual, this.matrizTransicoes[2][i]);
                     }
                 }
             }
-            for(int i = 0; i < this.qntTransicoes; i++) {
+            for(int i = 0; i < ultimosEstados.size(); i++){
                 for(int j = 0; j < this.estadosAceitacao.length; j++) {
-                    if(ultimosEstados[i] == estadosAceitacao[j]) {
+                    if(ultimosEstados.get(i).equals(estadosAceitacao[j])) {
                         return true;
                     }
                 }
@@ -84,5 +82,20 @@ public class Automato {
             }
             return false;
         }
+    }
+
+    private LinkedList estadosPorCadeiaVazia(int estadoOriginal, int estadoSaida, int estadoEntrada) {
+        LinkedList ultimosEstados = new LinkedList<Integer>();
+        ultimosEstados.add(estadoSaida);
+        for(int i = 0; i < this.qntTransicoes; i++) {
+            if(this.matrizTransicoes[0][i] == estadoEntrada && this.matrizTransicoes[1][i] == 0) {
+                if(this.matrizTransicoes[2][i] != estadoOriginal) {
+                    proximoDoProximo = estadosPorCadeiaVazia(estadoOriginal, estadoEntrada, this.matrizTransicoes[2][i]);
+                    ultimosEstados.add(proximoDoProximo);
+                    return ultimosEstados;
+                }
+            }
+        }
+        return ultimosEstados;
     }
 }
