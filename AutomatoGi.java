@@ -1,6 +1,6 @@
 import java.util.LinkedList;
 
-public class Automato {
+public class AutomatoGi {
     public int qntEstados;
     public int qntSimbolos;
     public int qntTransicoes;
@@ -9,7 +9,7 @@ public class Automato {
     public int[][] matrizTransicoes;
     //public List<Integer> ultimosEstados = new LinkedList<Integer>();
 
-    public Automato(String qntEstados, String qntSimbolos, String qntTransicoes, String estadoInicial, int[] estadosAceitacao) {
+    public AutomatoGi(String qntEstados, String qntSimbolos, String qntTransicoes, String estadoInicial, int[] estadosAceitacao) {
         this.qntEstados = Integer.parseInt(qntEstados);
         this.qntSimbolos = Integer.parseInt(qntSimbolos);
         this.qntTransicoes = Integer.parseInt(qntTransicoes);

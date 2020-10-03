@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class LeitorAna {
+public class LeitorGi {
     public static void main(String[] args) throws IOException {
         FileReader ler = new FileReader(new File(args[0])); 
         BufferedReader leitor = new BufferedReader(ler);
@@ -22,7 +22,7 @@ public class LeitorAna {
                 estadosAceitacao[j] = Integer.parseInt(stringAceitacao[j]);
             }
             
-            AutomatoAna automato = new AutomatoAna(cabecalho[0], cabecalho[1], cabecalho[2], cabecalho[3], estadosAceitacao);
+            AutomatoGi automato = new AutomatoGi(cabecalho[0], cabecalho[1], cabecalho[2], cabecalho[3], estadosAceitacao);
 
             int qntTransicoes = Integer.parseInt(cabecalho[2]);
             for(int j = 0; j < qntTransicoes; j++) {

@@ -1,4 +1,4 @@
-public class Automato {
+public class AutomatoAna {
     public int qntEstados;
     public int qntSimbolos;
     public int qntTransicoes;
@@ -6,7 +6,7 @@ public class Automato {
     public int[] estadosAceitacao;
     public int[][] matrizTransicoes;
 
-    public Automato(String qntEstados, String qntSimbolos, String qntTransicoes, String estadoInicial, int[] estadosAceitacao) {
+    public AutomatoAna(String qntEstados, String qntSimbolos, String qntTransicoes, String estadoInicial, int[] estadosAceitacao) {
         this.qntEstados = Integer.parseInt(qntEstados);
         this.qntSimbolos = Integer.parseInt(qntSimbolos);
         this.qntTransicoes = Integer.parseInt(qntTransicoes);
