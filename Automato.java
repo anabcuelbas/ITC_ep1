@@ -39,7 +39,7 @@ public class Automato {
         int simbolo = cadeia[posicaoCadeia];
         boolean aceito = false;
 
-        if(posicaoCadeia == cadeia.length) {
+        if(posicaoCadeia == (cadeia.length - 1)) {
             int [] ultimosEstados = new int [this.qntTransicoes];
 
             for(int i = 0; i < this.qntTransicoes; i++) {
@@ -50,8 +50,10 @@ public class Automato {
                 }
             }
             for(int i = 0; i < this.qntTransicoes; i++) {
-                if(estadoAtual == ultimosEstados[i]) {
-                    return true;
+                for(int j = 0; j < this.estadosAceitacao.length; j++) {
+                    if(ultimosEstados[i] == estadosAceitacao[j]) {
+                        return true;
+                    }
                 }
             }
             return false;
