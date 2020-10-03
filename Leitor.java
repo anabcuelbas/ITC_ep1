@@ -4,6 +4,9 @@ public class Leitor {
     public static void main(String[] args) throws IOException {
         FileReader ler = new FileReader(new File(args[0])); 
         BufferedReader leitor = new BufferedReader(ler);
+
+        FileWriter saida = new FileWriter(new File(args[1]));
+        PrintWriter escritor = new PrintWriter(saida);
      
         int qntAutomatos = Integer.parseInt(leitor.readLine());
         for(int i = 0; i < qntAutomatos; i++) {
@@ -40,9 +43,15 @@ public class Leitor {
                 }
 
                 Boolean resultado = automato.AvaliaCadeia(vetorCadeiaInt);
-                System.out.println();
-                System.out.println(resultado);
+                if(resultado) {
+                    escritor.print("1");
+                } else {
+                    escritor.print("0");
+                }
+                escritor.print(" ");
             }
+            escritor.println();
         }
+        saida.close();
     }
 }
