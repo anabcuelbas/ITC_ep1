@@ -48,7 +48,7 @@ public class Automato {
             for(int i = 0; i < this.qntTransicoes; i++) {
                 if(this.matrizTransicoes[0][i] == estadoAtual) {
                     if(this.matrizTransicoes[1][i] == simbolo){
-                        ultimosEstados = estadosPorCadeiaVazia(estadoAtual, estadoAtual, this.matrizTransicoes[2][i]);
+                        ultimosEstados = estadosPorCadeiaVazia(estadoAtual, estadoAtual, this.matrizTransicoes[2][i], this.matrizTransicoes);
                     }
                 }
             }
@@ -84,13 +84,14 @@ public class Automato {
         }
     }
 
-    private LinkedList estadosPorCadeiaVazia(int estadoOriginal, int estadoSaida, int estadoEntrada) {
+    private LinkedList estadosPorCadeiaVazia(int estadoOriginal, int estadoSaida, int estadoEntrada, int[][] matrizDoAutomato) {
         LinkedList ultimosEstados = new LinkedList<Integer>();
+        LinkedList proximoDoProximo = new LinkedList<Integer>();
         ultimosEstados.add(estadoSaida);
         for(int i = 0; i < this.qntTransicoes; i++) {
-            if(this.matrizTransicoes[0][i] == estadoEntrada && this.matrizTransicoes[1][i] == 0) {
-                if(this.matrizTransicoes[2][i] != estadoOriginal) {
-                    proximoDoProximo = estadosPorCadeiaVazia(estadoOriginal, estadoEntrada, this.matrizTransicoes[2][i]);
+            if(matrizDoAutomato[0][i] == estadoEntrada && matrizDoAutomato[1][i] == 0) {
+                if(matrizDoAutomato[2][i] != estadoOriginal) {
+                    proximoDoProximo = estadosPorCadeiaVazia(estadoOriginal, estadoEntrada, matrizDoAutomato[2][i], matrizDoAutomato);
                     ultimosEstados.add(proximoDoProximo);
                     return ultimosEstados;
                 }
