@@ -1,5 +1,3 @@
-import java.util.LinkedList;
-
 public class Automato {
     public int qntEstados;
     public int qntSimbolos;
@@ -7,7 +5,6 @@ public class Automato {
     public int estadoInicial;
     public int[] estadosAceitacao;
     public int[][] matrizTransicoes;
-    //public List<Integer> ultimosEstados = new LinkedList<Integer>();
 
     public Automato(String qntEstados, String qntSimbolos, String qntTransicoes, String estadoInicial, int[] estadosAceitacao) {
         this.qntEstados = Integer.parseInt(qntEstados);
@@ -33,29 +30,34 @@ public class Automato {
 
     public boolean AvaliaCadeia(int[] cadeia) {
         boolean aceito = false;
-        aceito = AvaliaRecursivo(cadeia, 0, this.estadoInicial, -1);
+
+        aceito = AvaliaRecursivo(cadeia, this.estadoInicial, 0);
 
         return aceito;
     }
 
-    private boolean AvaliaRecursivo(int[] cadeia, int posicaoCadeia, int estadoAtual, int vemDeCadeiaVazia) {
-        int simbolo = cadeia[posicaoCadeia];
+    private boolean AvaliaRecursivo(int[] cadeia, int estadoAtual, int posicaoProximoSimbolo) {
+        int simbolo = -1;
         boolean aceito = false;
 
-        if(posicaoCadeia == (cadeia.length - 1)) {
-            LinkedList ultimosEstados = new LinkedList<Integer>();
-            
-            for(int i = 0; i < this.qntTransicoes; i++) {
-                if(this.matrizTransicoes[0][i] == estadoAtual) {
-                    if(this.matrizTransicoes[1][i] == simbolo){
-                        ultimosEstados = estadosPorCadeiaVazia(estadoAtual, estadoAtual, this.matrizTransicoes[2][i], this.matrizTransicoes);
-                    }
-                }
-            }
-            for(int i = 0; i < ultimosEstados.size(); i++){
-                for(int j = 0; j < this.estadosAceitacao.length; j++) {
-                    if(ultimosEstados.get(i).equals(estadosAceitacao[j])) {
-                        return true;
+        if(posicaoProximoSimbolo < cadeia.length) {
+            simbolo = cadeia[posicaoProximoSimbolo];
+        }
+
+        if(posicaoProximoSimbolo >= cadeia.length) {
+            for(int i = 0; i < this.estadosAceitacao.length; i++) {
+                if(estadoAtual == this.estadosAceitacao[i]) {
+                    return true;
+                } else {
+                    for(int j = 0; j < this.qntTransicoes; j++) {
+                        if(this.matrizTransicoes[0][j] == estadoAtual) {
+                            if(this.matrizTransicoes[1][j] == 0) {
+                                if(this.matrizTransicoes[2][j] == this.estadosAceitacao[i]) {
+                                    aceito = AvaliaRecursivo(cadeia, this.matrizTransicoes[2][j], posicaoProximoSimbolo);
+                                    if(aceito) return true;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -64,39 +66,16 @@ public class Automato {
             for(int j = 0; j < this.qntTransicoes; j++) {
                 if(this.matrizTransicoes[0][j] == estadoAtual) {
                     if(this.matrizTransicoes[1][j] == simbolo) {
-                        if(this.matrizTransicoes[0][j] != vemDeCadeiaVazia) {
-                            aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia + 1, this.matrizTransicoes[2][j], -1);
-                            if(aceito) {
-                                return true;
-                            }
-                        }
+                        aceito = AvaliaRecursivo(cadeia, this.matrizTransicoes[2][j], posicaoProximoSimbolo + 1);
                     } else if(this.matrizTransicoes[1][j] == 0) {
-                        if(this.matrizTransicoes[0][j] != vemDeCadeiaVazia) {
-                            aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia, this.matrizTransicoes[2][j], estadoAtual);
-                            if(aceito) {
-                                return true;
-                            }
-                        }
+                        aceito = AvaliaRecursivo(cadeia, this.matrizTransicoes[2][j], posicaoProximoSimbolo);
                     }
+    
+                    if(aceito) return true;
                 }
             }
             return false;
         }
     }
-
-    private LinkedList estadosPorCadeiaVazia(int estadoOriginal, int estadoSaida, int estadoEntrada, int[][] matrizDoAutomato) {
-        LinkedList ultimosEstados = new LinkedList<Integer>();
-        LinkedList proximoDoProximo = new LinkedList<Integer>();
-        ultimosEstados.add(estadoSaida);
-        for(int i = 0; i < this.qntTransicoes; i++) {
-            if(matrizDoAutomato[0][i] == estadoEntrada && matrizDoAutomato[1][i] == 0) {
-                if(matrizDoAutomato[2][i] != estadoOriginal) {
-                    proximoDoProximo = estadosPorCadeiaVazia(estadoOriginal, estadoEntrada, matrizDoAutomato[2][i], matrizDoAutomato);
-                    ultimosEstados.add(proximoDoProximo);
-                    return ultimosEstados;
-                }
-            }
-        }
-        return ultimosEstados;
-    }
+        
 }
