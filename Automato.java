@@ -36,46 +36,37 @@ public class Automato {
     }
 
     private boolean AvaliaRecursivo(int[] cadeia, int posicaoCadeia, int estadoAtual, int vemDeCadeiaVazia) {
-        int simbolo;
+        int simbolo = cadeia[posicaoCadeia];
         boolean aceito = false;
 
-        if(posicaoCadeia < cadeia.length) {
-            simbolo = cadeia[posicaoCadeia];
-        } else {
-            //System.out.println("Entrou no else do simbolo");
-            simbolo = cadeia[posicaoCadeia - 1];
-        }
-
-        //System.out.print(estadoAtual + " leu " + simbolo + " -> ");
-        //System.out.println("Estado Atual: " + estadoAtual);
-        //System.out.println("Simbolo Lido: " + simbolo);
-
         if(posicaoCadeia == cadeia.length) {
-            //System.out.println("Entrou na confirmacao de ultima posicao");
-            for(int i = 0; i < estadosAceitacao.length; i++) {
-                if(estadoAtual == estadosAceitacao[i]) {
-                    /* System.out.println("Cadeia foi aceita");
-                    System.out.println(); */
+            int [] ultimosEstados = new int [this.qntTransicoes];
+
+            for(int i = 0; i < this.qntTransicoes; i++) {
+                if(this.matrizTransicoes[0][i] == estadoAtual) {
+                    if(this.matrizTransicoes[1][i] == simbolo){
+                        ultimosEstados[i] = this.matrizTransicoes[2][i];
+                    }
+                }
+            }
+            for(int i = 0; i < this.qntTransicoes; i++) {
+                if(estadoAtual == ultimosEstados[i]) {
                     return true;
                 }
             }
-            //System.out.println();
             return false;
         } else {
             for(int j = 0; j < this.qntTransicoes; j++) {
                 if(this.matrizTransicoes[0][j] == estadoAtual) {
                     if(this.matrizTransicoes[1][j] == simbolo) {
                         if(this.matrizTransicoes[0][j] != vemDeCadeiaVazia) {
-                            //System.out.println("Chamou recursao normal");
                             aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia + 1, this.matrizTransicoes[2][j], -1);
                             if(aceito) {
                                 return true;
                             }
                         }
                     } else if(this.matrizTransicoes[1][j] == 0) {
-                        //System.out.println("Entrou aqui!!!");
                         if(this.matrizTransicoes[0][j] != vemDeCadeiaVazia) {
-                            //System.out.println("Chamou recursao vazia");
                             aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia, this.matrizTransicoes[2][j], estadoAtual);
                             if(aceito) {
                                 return true;
@@ -84,7 +75,6 @@ public class Automato {
                     }
                 }
             }
-            //System.out.println();
             return false;
         }
     }
