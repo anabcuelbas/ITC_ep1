@@ -44,6 +44,12 @@ public class Automato {
             simbolo = cadeia[posicaoProximoSimbolo];
         }
 
+        if(cadeia[0] == 0) {
+            for(int i = 0; i < this.estadosAceitacao.length; i++) {
+                if(estadoAtual == this.estadosAceitacao[i]) return true;
+            }
+        }
+
         if(posicaoProximoSimbolo >= cadeia.length) {
             for(int i = 0; i < this.estadosAceitacao.length; i++) {
                 if(estadoAtual == this.estadosAceitacao[i]) {
