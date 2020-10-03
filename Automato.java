@@ -43,6 +43,7 @@ public class Automato {
             int [] ultimosEstados = new int [this.qntTransicoes];
 
             for(int i = 0; i < this.qntTransicoes; i++) {
+                ultimosEstados[i] = -1;
                 if(this.matrizTransicoes[0][i] == estadoAtual) {
                     if(this.matrizTransicoes[1][i] == simbolo){
                         ultimosEstados[i] = this.matrizTransicoes[2][i];
