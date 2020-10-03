@@ -44,11 +44,25 @@ public class Automato {
 
         if(posicaoCadeia == (cadeia.length - 1)) {
             LinkedList ultimosEstados = new LinkedList<Integer>();
+
+            for(int i = 0; i < this.qntTransicoes; i++) {
+                if(this.matrizTransicoes[0][i] == estadoAtual && this.matrizTransicoes[0][i] != vemDeCadeiaVazia) {
+                    if(this.matrizTransicoes[1][i] == 0) {
+                        aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia, this.matrizTransicoes[2][i], estadoAtual);
+                        if(aceito) {
+                            return true;
+                        }
+                    }
+                }
+            }
             
             for(int i = 0; i < this.qntTransicoes; i++) {
                 if(this.matrizTransicoes[0][i] == estadoAtual) {
                     if(this.matrizTransicoes[1][i] == simbolo){
                         ultimosEstados = estadosPorCadeiaVazia(estadoAtual, estadoAtual, this.matrizTransicoes[2][i], this.matrizTransicoes);
+                    }
+                    if(simbolo == 0) {
+                        ultimosEstados.add(estadoAtual);
                     }
                 }
             }
