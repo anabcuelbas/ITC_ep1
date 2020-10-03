@@ -31,12 +31,12 @@ public class AutomatoAna {
     public boolean AvaliaCadeia(int[] cadeia) {
         boolean aceito = false;
 
-        aceito = AvaliaRecursivo(cadeia, this.estadoInicial, 0);
+        aceito = AvaliaRecursivo(cadeia, this.estadoInicial, 0, -1);
 
         return aceito;
     }
 
-    private boolean AvaliaRecursivo(int[] cadeia, int estadoAtual, int posicaoProximoSimbolo) {
+    private boolean AvaliaRecursivo(int[] cadeia, int estadoAtual, int posicaoProximoSimbolo, int vemDeCadeiaVazia) {
         int simbolo = -1;
         boolean aceito = false;
 
@@ -59,8 +59,10 @@ public class AutomatoAna {
                         if(this.matrizTransicoes[0][j] == estadoAtual) {
                             if(this.matrizTransicoes[1][j] == 0) {
                                 if(this.matrizTransicoes[2][j] == this.estadosAceitacao[i]) {
-                                    aceito = AvaliaRecursivo(cadeia, this.matrizTransicoes[2][j], posicaoProximoSimbolo);
-                                    if(aceito) return true;
+                                    if(this.matrizTransicoes[2][j] != vemDeCadeiaVazia) {
+                                        aceito = AvaliaRecursivo(cadeia, this.matrizTransicoes[2][j], posicaoProximoSimbolo, estadoAtual);
+                                        if(aceito) return true;
+                                    }
                                 }
                             }
                         }
@@ -72,9 +74,13 @@ public class AutomatoAna {
             for(int j = 0; j < this.qntTransicoes; j++) {
                 if(this.matrizTransicoes[0][j] == estadoAtual) {
                     if(this.matrizTransicoes[1][j] == simbolo) {
-                        aceito = AvaliaRecursivo(cadeia, this.matrizTransicoes[2][j], posicaoProximoSimbolo + 1);
+                        if(this.matrizTransicoes[2][j] != vemDeCadeiaVazia) {
+                            aceito = AvaliaRecursivo(cadeia, this.matrizTransicoes[2][j], posicaoProximoSimbolo + 1, -1);
+                        }
                     } else if(this.matrizTransicoes[1][j] == 0) {
-                        aceito = AvaliaRecursivo(cadeia, this.matrizTransicoes[2][j], posicaoProximoSimbolo);
+                        if(this.matrizTransicoes[2][j] != vemDeCadeiaVazia) {
+                            aceito = AvaliaRecursivo(cadeia, this.matrizTransicoes[2][j], posicaoProximoSimbolo, estadoAtual);
+                        }
                     }
     
                     if(aceito) return true;
@@ -83,5 +89,4 @@ public class AutomatoAna {
             return false;
         }
     }
-        
 }
