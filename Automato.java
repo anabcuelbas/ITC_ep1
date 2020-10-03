@@ -41,6 +41,10 @@ public class Automato {
 
         if(posicaoCadeia == (cadeia.length - 1)) {
             int [] ultimosEstados = new int [this.qntTransicoes];
+            for(int i = 0; i < this.qntTransicoes; i++) {
+                ultimosEstados[i] = -1;
+            }
+
 
             for(int i = 0; i < this.qntTransicoes; i++) {
                 if(this.matrizTransicoes[0][i] == estadoAtual) {
