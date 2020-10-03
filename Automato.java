@@ -21,11 +21,11 @@ public class Automato {
         }
     }
 
-    public void ConstroiMatriz(int coluna, int estadoSaida, int simboloTransicao, int estadoEntrada) {
+    public void ConstroiMatriz(int coluna, int estadoInicial, int simboloTransicao, int estadoFinal) {
     
-        this.matrizTransicoes[0][coluna] = estadoSaida;
+        this.matrizTransicoes[0][coluna] = estadoInicial;
         this.matrizTransicoes[1][coluna] = simboloTransicao;
-        this.matrizTransicoes[2][coluna] = estadoEntrada;
+        this.matrizTransicoes[2][coluna] = estadoFinal;
     }
 
     public boolean AvaliaCadeia(int[] cadeia) {
@@ -42,38 +42,49 @@ public class Automato {
         if(posicaoCadeia < cadeia.length) {
             simbolo = cadeia[posicaoCadeia];
         } else {
+            //System.out.println("Entrou no else do simbolo");
             simbolo = cadeia[posicaoCadeia - 1];
         }
 
+        //System.out.print(estadoAtual + " leu " + simbolo + " -> ");
+        //System.out.println("Estado Atual: " + estadoAtual);
+        //System.out.println("Simbolo Lido: " + simbolo);
+
         if(posicaoCadeia == cadeia.length) {
+            //System.out.println("Entrou na confirmacao de ultima posicao");
             for(int i = 0; i < estadosAceitacao.length; i++) {
                 if(estadoAtual == estadosAceitacao[i]) {
+                    /* System.out.println("Cadeia foi aceita");
+                    System.out.println(); */
                     return true;
                 }
             }
+            //System.out.println();
             return false;
         } else {
-            for(int i = 0; i < this.qntEstados; i++) {
-                if(this.matrizTransicoes[0][i] == estadoAtual) {
-                    for(int j = 0; j < this.qntEstados; j++) {
-                        if(this.matrizTransicoes[1][j] == simbolo) {
-                            if(i != vemDeCadeiaVazia) {
-                                aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia + 1, i, -1);
-                                if(aceito) {
-                                    return true;
-                                }
+            for(int j = 0; j < this.qntTransicoes; j++) {
+                if(this.matrizTransicoes[0][j] == estadoAtual) {
+                    if(this.matrizTransicoes[1][j] == simbolo) {
+                        if(this.matrizTransicoes[0][j] != vemDeCadeiaVazia) {
+                            //System.out.println("Chamou recursao normal");
+                            aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia + 1, this.matrizTransicoes[2][j], -1);
+                            if(aceito) {
+                                return true;
                             }
-                        } else if(this.matrizTransicoes[1][j] == 0) {
-                            if(i != vemDeCadeiaVazia) {
-                                aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia, i, estadoAtual);
-                                if(aceito) {
-                                    return true;
-                                }
+                        }
+                    } else if(this.matrizTransicoes[1][j] == 0) {
+                        //System.out.println("Entrou aqui!!!");
+                        if(this.matrizTransicoes[0][j] != vemDeCadeiaVazia) {
+                            //System.out.println("Chamou recursao vazia");
+                            aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia, this.matrizTransicoes[2][j], estadoAtual);
+                            if(aceito) {
+                                return true;
                             }
                         }
                     }
                 }
             }
+            //System.out.println();
             return false;
         }
     }

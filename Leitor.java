@@ -40,6 +40,7 @@ public class Leitor {
                 }
 
                 Boolean resultado = automato.AvaliaCadeia(vetorCadeiaInt);
+                System.out.println();
                 System.out.println(resultado);
             }
         }
