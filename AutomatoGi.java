@@ -78,14 +78,14 @@ public class AutomatoGi {
             for(int j = 0; j < this.qntTransicoes; j++) {
                 if(this.matrizTransicoes[0][j] == estadoAtual) {
                     if(this.matrizTransicoes[1][j] == simbolo) {
-                        if(this.matrizTransicoes[0][j] != vemDeCadeiaVazia) {
+                        if(this.matrizTransicoes[2][j] != vemDeCadeiaVazia) {
                             aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia + 1, this.matrizTransicoes[2][j], -1);
                             if(aceito) {
                                 return true;
                             }
                         }
                     } else if(this.matrizTransicoes[1][j] == 0) {
-                        if(this.matrizTransicoes[0][j] != vemDeCadeiaVazia) {
+                        if(this.matrizTransicoes[2][j] != vemDeCadeiaVazia) {
                             aceito = this.AvaliaRecursivo(cadeia, posicaoCadeia, this.matrizTransicoes[2][j], estadoAtual);
                             if(aceito) {
                                 return true;
